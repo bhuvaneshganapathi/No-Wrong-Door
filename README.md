@@ -89,6 +89,4 @@ python3 test_solution.py
 
 ---
 
-## Submission Documentation
-- [`DECISIONS.md`](file:///c:/Users/hi/Desktop/No%20Wrong%20Door/DECISIONS.md): Architectural decisions, degradation matrix, and Day 2 challenge log.
-- [`AI-USAGE.md`](file:///c:/Users/hi/Desktop/No%20Wrong%20Door/AI-USAGE.md): AI tool usage disclosure.
+
