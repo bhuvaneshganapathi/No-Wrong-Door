@@ -1,0 +1,74 @@
+Problem 3 No Wrong Door
+Brite Spark 2026 · Integration / Engineering
+Integration / Engineering
+Build one unified resident view behind a single API, drawing from source systems that are slow, unreliable, and have never spoken to each other.
+Why this problem exists
+“No wrong door” is a real principle in public service delivery: whichever office a resident walks into, they should not have to tell their story again, and staff should not have to go hunting through four systems to find out who they are dealing with.
+It is also, almost always, an integration problem rather than a policy problem. The information exists. It is simply distributed across systems bought in different decades by different departments, none of which were designed to be read by anything other than their own front end.
+Integration work of exactly this shape is a large share of what Brite delivers. And the thing that separates a working integration from a demo is not whether you can call two APIs. It is what happens when one of them is having a bad day because one of them is always having a bad day.
+The scenario
+A resident’s information lives in more than one system. Staff currently check each one by hand, copying between browser tabs, and there is no reliable way to tell whether the two records they are looking at describe the same person.
+The office wants one view. One call, one resident, everything known about them.
+The systems they have are not going to be replaced, improved, or made more reliable in order to make this easier. They are what they are, and they will still be what they are the day after you deliver.
+What you are being asked to build
+A single API that returns a unified view of a resident, assembled from the sources provided.
+The core of the problem is not the assembly. It is behaving well when the sources do not. A unified view that works when everything is healthy and returns a server error when one source 
+is slow has not removed any work from the staff member they will go back to their browser tabs and never use it again.
+Command-line demonstration of your API is fine. Interface quality is not assessed on this problem.
+What we give you
+Two mock services, which you should run locally.
+A paginated REST endpoint.
+ It works, mostly. It also occasionally returns the same record on more than one page, which means naive pagination will produce duplicates in your output.
+An XML service.
+ It is slow, and it intermittently returns 500s. Both of these are normal for it, not faults you should wait for someone to fix.
+There is no shared key between the two sources. Records that describe the same person do not announce that they do.
+The floor
+These must all be true. Nothing above the floor counts until every box below is ticked.
+☐
+ 
+Graceful degradation.
+ Partial data beats an error page. If one source is unavailable, the API should return what it has along with a clear indication of what is missing and why never a bare failure, and never silently pretending the missing source had nothing to say.
+☐
+ 
+Retry-safe and idempotent.
+ The same request made twice does not produce a different or duplicated result, and a retried write does not double anything.
+☐
+ 
+Correct handling of the duplicate-across-pages behaviour
+, so your unified view does not contain the same source record twice.
+☐
+ 
+Runs from a clean clone using the README alone
+, including whatever is needed to bring the mock services up.
+Note carefully: 
+identity matching across sources with no shared key is a stretch goal, not a requirement.
+ It is genuinely hard, it is a rabbit hole, and it is not the floor. Do not sacrifice the requirements above to attempt it.
+Not required
+A user interface of any kind.
+A database or persistence layer, unless you want one.
+Authentication and authorisation.
+Identity resolution across sources see the note above.
+Handling any source other than the two provided.
+If you have time
+Only once the floor is fully met.
+Identity matching
+ across the two sources, with a stated confidence and a policy for what to do when the match is uncertain. If you attempt this, being wrong quietly is much worse than declining to merge.
+Caching with a defensible expiry
+, so a slow source is not slow on every call and an explanation of what staleness you have accepted in exchange.
+Circuit breaking
+, so a source that is comprehensively down stops being called on every request.
+Remember: the change on day two
+At some point on day two the requirements for this problem will change, and you will not be told in advance what the change is. Every problem in the set gets one.
+Build with that in mind. For this problem, the useful discipline is keeping each source adapter genuinely independent of the others and of the assembly logic, so that the behaviour of one source can change without the rest of the system caring.
+Submitting
+Your repository must contain a running demo, real commit history, 
+DECISIONS.md
+, and 
+AI-USAGE.md
+. 
+For this problem specifically, your 
+DECISIONS.md
+ should state 
+your degradation policy explicitly
+: for each way a source can fail, what does the caller get, and how do they know? That policy is the deliverable as much as the code is.
+Full rules, the complete rubric, and the AI usage policy are in the Participant Handbook.
